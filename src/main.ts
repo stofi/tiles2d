@@ -112,8 +112,10 @@ const main = () => {
   cc.drawAll(mappedTiles)
 }
 
+const imageElement = document.getElementById('tileset') as HTMLImageElement
 const image = new Image()
-image.src = './assets/tileset.png'
+image.src = imageElement.src
+
 let ts: Tileset
 
 let tileVariants: Tile[] = []
