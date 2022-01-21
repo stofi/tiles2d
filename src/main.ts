@@ -76,30 +76,6 @@ const main = () => {
     return { ...sample, value }
   })
 
-  // draw rectangles for each sample
-  const rectangles: Rectangle[] = []
-  const samplePoints: Rectangle[] = []
-  samples.forEach((sample, index, arr) => {
-    const color = `hsl(${(index / arr.length) * 130}, 90%, ${
-      sample.value === 0 ? 50 : 100
-    }%)`
-    // const color = `hsl(${sample.value * 360}, 100%, 50%)`
-    const rectangle = new Rectangle(
-      sample.position.subtract(
-        new Vector2(sampleCellSize / 2, sampleCellSize / 2)
-      ),
-      new Vector2(sampleCellSize),
-      color
-    )
-    rectangles.push(rectangle)
-    const samplePoint = new Rectangle(
-      sample.position.subtract(new Vector2(1)),
-      new Vector2(2),
-      sample.value === 0 ? 'red' : 'pink'
-    )
-    samplePoints.push(samplePoint)
-  })
-  console.log(samplesWidth);
   
 
   const dual = samples.map((sample, i) => {
@@ -122,28 +98,6 @@ const main = () => {
     }
   })
 
-  const variants = dual.map((sample,index) => ({
-    draw(ctx: CanvasRenderingContext2D) {
-      // draw variant number text
-      ctx.fillStyle = '#000'
-      ctx.font = '9px monospaced'
-      ctx.fillText(
-        `${index.toFixed(0)}:${sample.value.toFixed(0)}`,
-        sample.position.x,
-        sample.position.y + 9
-      )
-    },
-  }))
-
-  const dualPoints = dual.map((sample) => {
-    const rectangle = new Rectangle(
-      sample.position,
-      new Vector2(sampleCellSize),
-      'blue',
-      true
-    )
-    return rectangle
-  })
   const mappedTiles = ts.tiles.length
     ? dual.map((sample) => {
         const tileIndex = sample.value
@@ -155,11 +109,7 @@ const main = () => {
       })
     : []
 
-  // cc.drawAll(rectangles)
-  // cc.drawAll(dualPoints)
-  // cc.drawAll(samplePoints)
   cc.drawAll(mappedTiles)
-  // cc.drawAll(variants)
 }
 
 const image = new Image()
