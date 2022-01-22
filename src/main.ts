@@ -37,47 +37,47 @@ const main = () => {
     tile.scale = new Vector2(CONSTANTS.tileSize / 32)
     return tile
   })
-  const debug = ms.samples.map(({ position, value }): Drawable => {
-    return {
-      draw: (ctx: CanvasRenderingContext2D) => {
-        // print position and value
-        ctx.fillStyle = 'black'
-        ctx.font = '10px Arial'
-        ctx.fillText(
-          `${(10* value -5).toFixed(2)}`,
-          position.x * CONSTANTS.tileSize + 2,
-          position.y * CONSTANTS.tileSize + CONSTANTS.tileSize * 0.25
-        )
-        // // print position
-        // ctx.fillStyle = 'blue'
-        // // set font size to 10px
-        // ctx.font = '8px Arial'
-        // ctx.fillText(
-        //   `${position.x}, ${position.y}`,
-        //   position.x * CONSTANTS.tileSize + 12,
-        //   position.y * CONSTANTS.tileSize + CONSTANTS.tileSize * 0.25 + 4
-        // )
-      },
-    }
-  })
+  // const debug = ms.samples.map(({ position, value }): Drawable => {
+  //   return {
+  //     draw: (ctx: CanvasRenderingContext2D) => {
+  //       // print position and value
+  //       ctx.fillStyle = 'black'
+  //       ctx.font = '10px Arial'
+  //       ctx.fillText(
+  //         `${(10* value -5).toFixed(2)}`,
+  //         position.x * CONSTANTS.tileSize + 2,
+  //         position.y * CONSTANTS.tileSize + CONSTANTS.tileSize * 0.25
+  //       )
+  //       // // print position
+  //       // ctx.fillStyle = 'blue'
+  //       // // set font size to 10px
+  //       // ctx.font = '8px Arial'
+  //       // ctx.fillText(
+  //       //   `${position.x}, ${position.y}`,
+  //       //   position.x * CONSTANTS.tileSize + 12,
+  //       //   position.y * CONSTANTS.tileSize + CONSTANTS.tileSize * 0.25 + 4
+  //       // )
+  //     },
+  //   }
+  // })
 
-  const noise = ms.samples.map(
-    ({ position, value }): Rectangle => {
-      const v  = Math.floor(value * 3)
-      console.log(v);
+  // const noise = ms.samples.map(
+  //   ({ position, value }): Rectangle => {
+  //     const v  = Math.floor(value * 3)
+  //     console.log(v);
       
-      return new Rectangle(
-        position.scale(CONSTANTS.tileSize),
-        new Vector2(CONSTANTS.tileSize),
-        `hsla(${v * -120 + 240}, 80%, 80%, .8)`,
-        false
-      )
-    }
-  )
+  //     return new Rectangle(
+  //       position.scale(CONSTANTS.tileSize),
+  //       new Vector2(CONSTANTS.tileSize),
+  //       `hsla(${v * -120 + 240}, 80%, 80%, .8)`,
+  //       false
+  //     )
+  //   }
+  // )
 
   cc.drawAll(tiles)
   // cc.drawAll(debug)
-  cc.drawAll(noise)
+  // cc.drawAll(noise)
 }
 
 image.src = imageElement.src
