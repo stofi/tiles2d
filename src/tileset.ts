@@ -9,7 +9,7 @@ export class Tile implements Drawable {
   public scale: Vector2
 
   constructor(image: HTMLImageElement, position: Vector2, size: Vector2) {
-    this._image = image.cloneNode(true) as HTMLImageElement
+    this._image = image//.cloneNode(true) as HTMLImageElement
     this._position = position
     this._size = size
     this.scale = new Vector2(1)

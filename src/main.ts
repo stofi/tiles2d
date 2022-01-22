@@ -77,6 +77,7 @@ const main = () => {
 
 image.src = imageElement.src
 image.onload = () => {
+  
   ts = new Tileset(image, new Vector2(32))
   let offset = 50
   tileVariants = []
