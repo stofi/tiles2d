@@ -12,8 +12,10 @@ class MarchingSquares {
   // ## Private properties
   private size: Vector2
   private noise: SimplexNoise = new SimplexNoise()
+  private noisePower: number = 1.2
   private samples: Sample[] = []
   private dualSamples: Sample[] = []
+  private layers: number
 
   // ### Internal properties
   private samplesInitialized = false
@@ -35,8 +37,9 @@ class MarchingSquares {
    * @description Initializes the generator
    * @returns Marching
    */
-  constructor(size: Vector2) {
+  constructor(size: Vector2, layers = 2) {
     this.size = size
+    this.layers = layers
   }
 
   // # Methods
@@ -134,13 +137,23 @@ class MarchingSquares {
    */
   private getDualVariant(position: Vector2): number {
     let variant = 0b0000
+    const neighbourhoodLayer = this.getNeighbours(position).reduce(
+      (lowestLayer, b) => {
+        const floored = b ? Math.floor(b.value) : 0
+        if (floored < lowestLayer) return floored
+        return lowestLayer
+      },
+      Infinity
+    )
+    variant |= neighbourhoodLayer << 4
     const neighboursValues = this.getNeighbours(position).map((n) =>
-      n && n.value > 0.5 ? 1 : 0
+      n && n.value - neighbourhoodLayer > 0.5 ? 1 : 0
     )
     if (neighboursValues[0] === 1) variant |= 0b0001
     if (neighboursValues[1] === 1) variant |= 0b0010
     if (neighboursValues[2] === 1) variant |= 0b0100
     if (neighboursValues[3] === 1) variant |= 0b1000
+
     return variant
   }
 
@@ -149,17 +162,21 @@ class MarchingSquares {
    * @returns number
    * @description Returns the noise value at the given position
    */
-  private getNoise(position: Vector2): number {
+  private getNoise(position: Vector2, offsetPosition = new Vector2(0)): number {
     const transformedPosition = position
       .subtract(this.centerPosition)
+      .subtract(offsetPosition)
       .scale(this.noiseScale)
+    const amplitude = this.layers - 1
     const noiseValue =
       (1 + this.noise.noise2D(transformedPosition.x, transformedPosition.y)) / 2
-    return noiseValue
+    const powerCurve = Math.pow(noiseValue, this.noisePower)
+    const clamped = Math.min(Math.max(powerCurve, 0), 1)
+    return clamped * amplitude
   }
 
-  /* populateDualSamples
-   * @description Populates the dual samples
+  /* populateSamples
+   * @description Populates the samples
    */
   private populateSamples() {
     if (!this.samplesInitialized) throw new Error('Samples not initialized')
