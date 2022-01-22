@@ -17,7 +17,7 @@ export class Tile implements Drawable {
   }
 
   setPosition(position: Vector2): void {
-    this.position = position
+    this.position = new Vector2(position)
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
